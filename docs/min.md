@@ -1,5 +1,4 @@
 # Min-host Documentation
-
 This documentation will cover the following key areas in future updates:
 
 ## 1. Network Protocol

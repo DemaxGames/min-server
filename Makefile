@@ -1,8 +1,8 @@
 TARGET = min
 
-CC = gcc
-LD = gcc
-CFLAGS += -Iinclude -g
+CC = g++
+LD = g++
+CFLAGS += -Iinclude -O0
 
 CSRC := $(wildcard src/*.cpp)
 CSRC := $(CSRC) $(wildcard src/*.c)
@@ -12,7 +12,7 @@ COBJ := $(patsubst %.c, %.o, $(COBJ))
 COBJ := $(subst src, build, $(COBJ))
 
 $(TARGET): debug $(COBJ)
-	$(LD) $(COBJ) -o $(TARGET).exe
+	$(LD) $(COBJ) -lws2_32 -o $(TARGET).exe
 
 build/%.o: src/%.cpp
 	$(CC) $< $(CFLAGS) -c -o $@

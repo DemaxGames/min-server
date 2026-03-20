@@ -1,7 +1,7 @@
 {"car" : {
     "engine": "V8",
-    "horse_power": 200,
-    "seatbelt": false,
+    "horse_power": 220,
+    "seatbelt": true,
     "license": null
 }
 }

@@ -21,6 +21,14 @@ int main(int argc, const char *argv[]){
     }
     test.FillFromStr(str);
 
+    if(test.name == "car"){
+        std::cout << "name: car\n";
+        std::cout << "\tengine : " << *(std::string*)(test["engine"].GetField()) << "\n";
+        std::cout << "\thorse_power : " << *(int*)(test["horse_power"].GetField()) << "\n";
+        std::cout << "\tseatbelt : " << *(bool*)(test["seatbelt"].GetField()) << "\n";
+        std::cout << "\tlicense : " << (test["license"].GetField()) << "\n";
+    }
+
 
     // Socket s(8080);
     // std::string answer;

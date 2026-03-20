@@ -10,6 +10,14 @@ Field::Field(){
     data = NULL;
 }
 
+Field::Field(Field &&obj){
+    // std::cout << "Move semantics\n";
+    name = obj.name;
+    type = obj.type;
+    data = obj.data;
+    obj.data = NULL;
+}
+
 Field::Field(std::string name, size_t hashcode){
     this->name = name;
     type = hashcode;
@@ -97,7 +105,7 @@ int Field::FillFromStr(std::string str){
     for(; str[i] != '"'; i++);
     int name_len = i - name_start;
     name = str.substr(name_start, name_len);
-    std::cout << "name: " << name << "\n";
+    // std::cout << "name: " << name << "\n";
 
     int data_start;
     int data_len;
@@ -116,14 +124,62 @@ int Field::FillFromStr(std::string str){
     }
     for(; str[i] != ',' && str[i] != '}'; i++);
     data_len = i - data_start;
-    std::string data = str.substr(data_start, data_len);
-    std::cout << "data: " << data << "\n";
+    std::string data = str.substr(data_start, data_len); 
+    // std::cout << "data: " << data << "\n";
     if(array){
+        type = typeid(std::vector<Field>).hash_code();
+        this->data = new std::vector<Field>;
         int j = 0;
         while(data.size() > 1){
             //std::cout << "j: " << j << " feedstr: " << data << " feedstrsize: " << data.size() << "\n";
-            j = FillFromStr(data);
+            Field tmp;
+            j = tmp.FillFromStr(data);
             data = data.substr(j + 1, data.size() - j);
+            (*(std::vector<Field>*)(this->data)).push_back(std::move(tmp));
+        }
+    } else {
+        bool number = true;
+        this->data = NULL;
+        for(int j = 0; j < data.size(); j++){
+            if(data[j] == '"') {
+                //std::cout << "trying to convert a string\n";
+                type = typeid(std::string).hash_code();
+                int str_start = ++j;
+                for(;data[j] != '"'; j++);
+                int str_len = j - str_start;
+                this->data = new std::string(data.substr(str_start, str_len));
+                number = false;
+                break;
+            } else if(data[j] == 'n'){
+                if(data.substr(j, 4) == "null"){
+                    type = typeid(void).hash_code();
+                    this->data = NULL;
+                }
+                number = false;
+                break;
+            } else if(data[j] == 't' || data[j] == 'f'){
+                if(data.substr(j, 4) == "true"){
+                    type = typeid(bool).hash_code();
+                    this->data = new bool(true);
+                } else if(data.substr(j, 5) == "false"){
+                    type = typeid(bool).hash_code();
+                    this->data = new bool(false);
+                }
+                number = false;
+                break;
+            }
+        }
+        if(number){
+            bool dot = false;
+            for(int j = 0; j < data.size(); j++) if(data[j] == '.') dot = true;
+            if(dot){
+                type = typeid(double).hash_code();
+                this->data = new double(std::stod(data));
+            } else {
+                // std::cout << "Trying to stoi: " << data << "\n";
+                type = typeid(int).hash_code();
+                this->data = new int(std::stoi(data));
+            }
         }
     }
     return i;

@@ -11,6 +11,7 @@ public:
     size_t type;
     void* data;
     Field();
+    Field(Field &&obj);
     Field(std::string name, size_t hashcode);
     ~Field();
     void* GetField();

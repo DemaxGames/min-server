@@ -9,7 +9,6 @@
 int main(int argc, const char *argv[]){
     printf("Hello min server!\n");
     
-    json::Field test;
     std::ifstream file;
     std::string str;
     file.open("example.json", std::ios::ate);
@@ -19,15 +18,15 @@ int main(int argc, const char *argv[]){
         file.seekg(0);
         file.read(str.data(), str.size());
     }
-    test.FillFromStr(str);
+    
+    json::File test;
+    test.Read(str);
 
-    if(test.name == "car"){
-        std::cout << "name: car\n";
-        std::cout << "\tengine : " << *(std::string*)(test["engine"].GetField()) << "\n";
-        std::cout << "\thorse_power : " << *(int*)(test["horse_power"].GetField()) << "\n";
-        std::cout << "\tseatbelt : " << *(bool*)(test["seatbelt"].GetField()) << "\n";
-        std::cout << "\tlicense : " << (test["license"].GetField()) << "\n";
-    }
+    std::cout << "name: " << test.top.name << "\n";
+    std::cout << "\tengine : " << *(std::string*)(test.top["engine"].GetField()) << "\n";
+    std::cout << "\thorse_power : " << *(int*)(test.top["horse_power"].GetField()) << "\n";
+    std::cout << "\tseatbelt : " << *(bool*)(test.top["seatbelt"].GetField()) << "\n";
+    std::cout << "\tlicense : " << test.top["license"].GetField() << "\n";
 
 
     // Socket s(8080);

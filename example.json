@@ -1,7 +1,6 @@
-{"car" : {
+{
     "engine": "V8",
     "horse_power": 220,
     "seatbelt": true,
     "license": null
-}
-}
+} 

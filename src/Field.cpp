@@ -2,6 +2,17 @@
 
 #include <iostream>
 #include <vector>
+#include <ctype.h>
+
+bool spaceCheck(std::string str){
+    int i = 0;
+    int s = 0;
+    for(; i < str.size(); i++){
+        if(isspace(str[i])) s++;
+        if(str[i] == '\0') s++;
+    }
+    return i != s;
+}
 
 namespace json{
 
@@ -85,14 +96,16 @@ Field& Field::operator[] (std::string name){
         for(int i = 0; i < ((std::vector<Field>*)data)->size(); i++){
             if((*((std::vector<Field>*)data))[i].name == name) return (*((std::vector<Field>*)data))[i];
         }
+        std::cerr << "ERROR: cannot find object with name: " << name << "\n"; 
     }
 }
 
-const Field& Field::operator[] (std::string) const{
+const Field& Field::operator[] (std::string name) const{
     if(type == typeid(std::vector<Field>).hash_code()){
         for(int i = 0; i < ((std::vector<Field>*)data)->size(); i++){
             if((*((std::vector<Field>*)data))[i].name == name) return (*((std::vector<Field>*)data))[i];
         }
+        std::cerr << "ERROR: cannot find object with name: " << name << "\n"; 
     }
 }
 
@@ -100,7 +113,8 @@ int Field::FillFromStr(std::string str){
     bool array = false;
     int i = 0;
     int name_start;
-    for(; str[i] != '"'; i++);
+    for(; str[i] != '"' && i < str.size(); i++);
+    if(i == (str.size() - 1)) return i;
     name_start = ++i;
     for(; str[i] != '"'; i++);
     int name_len = i - name_start;
@@ -131,7 +145,7 @@ int Field::FillFromStr(std::string str){
         this->data = new std::vector<Field>;
         int j = 0;
         while(data.size() > 1){
-            //std::cout << "j: " << j << " feedstr: " << data << " feedstrsize: " << data.size() << "\n";
+            if(!spaceCheck(data)) break;
             Field tmp;
             j = tmp.FillFromStr(data);
             data = data.substr(j + 1, data.size() - j);
@@ -182,8 +196,10 @@ int Field::FillFromStr(std::string str){
             }
         }
     }
+
     return i;
 }
+
 
 
 }

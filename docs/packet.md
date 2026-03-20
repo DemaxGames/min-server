@@ -32,8 +32,8 @@ OK\0.1
 MESSAGE\0.1
 <json>
 {
-    "message": "Hello world!"
-    "time": "19.03.2026 18:09:55"
+    "message": "Hello world!",
+    "time": "19.03.2026 18:09:55",
     "owner": "@Server"
 }
 ```
@@ -54,7 +54,7 @@ if success server should return **OK** packet
 SEND\0.1
 <json>
 {
-    "message":"Hello world!"
+    "message": "Hello world!",
     "owner": "@user"
 }
 ```

@@ -9,16 +9,17 @@
 int main(int argc, const char *argv[]){
     printf("Hello min server!\n");
     
-    json::Field test("test", typeid(int).hash_code());
-    test.SetField(typeid(int).hash_code(), new int(56));
-    std::cout << "int: " <<*(int*)test.GetField() << "\n";
-    test.SetField(typeid(int).hash_code(), new int(12));
-    std::cout << "int: " <<*(int*)test.GetField() << "\n";
-    test.SetField(typeid(int).hash_code(), new int(-99));
-    std::cout << "int: " <<*(int*)test.GetField() << "\n";
-    test.SetField(typeid(float).hash_code(), new float(21.8f));
-    std::cout << "float: " << *(float*)test.GetField() << "\n";
-    std::cout << "tests done\n";
+    json::Field test;
+    std::ifstream file;
+    std::string str;
+    file.open("example.json", std::ios::ate);
+    if(file){
+        auto size = file.tellg();
+        str.resize((size_t)size);
+        file.seekg(0);
+        file.read(str.data(), str.size());
+    }
+    test.FillFromStr(str);
 
 
     // Socket s(8080);

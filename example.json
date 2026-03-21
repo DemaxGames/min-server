@@ -1,6 +1,9 @@
 {
-    "engine": "V8",
-    "horse_power": 220,
-    "seatbelt": true,
-    "license": null
-} 
+  "horse_power": 220,
+  "seatbelt": true,
+  "license": null,
+  "struct" : {
+    "complex" : "data",
+    "with" : 2000
+  }
+}

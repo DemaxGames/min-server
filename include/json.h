@@ -19,6 +19,7 @@ public:
     Field& operator[] (std::string);
     const Field& operator[] (std::string) const;
     int FillFromStr(std::string str);
+    std::string Stringify();
 };
 
 class File{

@@ -22,12 +22,8 @@ int main(int argc, const char *argv[]){
     json::File test;
     test.Read(str);
 
-    std::cout << "name: " << test.top.name << "\n";
-    std::cout << "\tengine : " << *(std::string*)(test.top["engine"].GetField()) << "\n";
-    std::cout << "\thorse_power : " << *(int*)(test.top["horse_power"].GetField()) << "\n";
-    std::cout << "\tseatbelt : " << *(bool*)(test.top["seatbelt"].GetField()) << "\n";
-    std::cout << "\tlicense : " << test.top["license"].GetField() << "\n";
 
+    std::cout << test.Write();
 
     // Socket s(8080);
     // std::string answer;

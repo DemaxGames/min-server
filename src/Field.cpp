@@ -134,7 +134,6 @@ int Field::FillFromStr(std::string str){
             if(str[i] == '{') opened_brackets++;
             if(str[i] == '}') opened_brackets--;
         }
-        i++;
     }
     for(; str[i] != ',' && str[i] != '}'; i++);
     data_len = i - data_start;
@@ -200,6 +199,28 @@ int Field::FillFromStr(std::string str){
     return i;
 }
 
+std::string Field::Stringify(){
+    std::string str = "\"" + name + "\":";
+    if(type == typeid(int).hash_code()){
+        str += std::to_string(*(int*)data);
+    } else if(type == typeid(double).hash_code()){
+        str += std::to_string(*(double*)data);
+    } else if(type == typeid(bool).hash_code()){
+        str += std::to_string(*(bool*)data);
+    } else if(type == typeid(std::string).hash_code()){
+        str += "\"" +(*(std::string*)data) + "\"";
+    } else if(type == typeid(std::vector<Field>).hash_code()){
+        str += "{\n";
+        for(int i = 0; i < (*(std::vector<Field>*)data).size(); i++){
+            str += (*(std::vector<Field>*)data)[i].Stringify();
+            if(i != ((*(std::vector<Field>*)data).size() - 1)) str += ",\n";
+        }
+        str += "\n}";
+    } else if(type == typeid(void).hash_code()){
+        str += "null";
+    }
+    return str;
+}
 
 
 }

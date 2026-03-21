@@ -44,6 +44,7 @@ _message_  contains the text of the message
 
 # serverbound packet list
 1. **SEND**
+2. **GET**
 
 # SEND
 **SEND** is used to send messages
@@ -61,3 +62,16 @@ SEND\0.1
 _message_ contains the text of the message
 <br>_owner_ is the tag of person who sends the message
 
+# GET
+**GET** is used to request messages
+
+if success server should return **MESSAGE** packet
+
+```
+GET\0.1
+<json>
+{
+    "id": 12
+}
+```
+_id_ contains unique id of the message

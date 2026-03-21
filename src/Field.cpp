@@ -98,6 +98,8 @@ Field& Field::operator[] (std::string name){
         }
         std::cerr << "ERROR: cannot find object with name: " << name << "\n"; 
     }
+    std::cerr << "ERROR: wrong field type to []: " << name << "\n"; 
+    return *this;
 }
 
 const Field& Field::operator[] (std::string name) const{
@@ -107,6 +109,8 @@ const Field& Field::operator[] (std::string name) const{
         }
         std::cerr << "ERROR: cannot find object with name: " << name << "\n"; 
     }
+    std::cerr << "ERROR: wrong field type to []: " << name << "\n"; 
+    return *this;
 }
 
 int Field::FillFromStr(std::string str){
@@ -220,6 +224,13 @@ std::string Field::Stringify(){
         str += "null";
     }
     return str;
+}
+
+json::Field &json::Field::operator=(json::Field const &obj){
+    name = obj.name;
+    type = obj.type;
+    data = obj.data;
+    return *this;
 }
 
 

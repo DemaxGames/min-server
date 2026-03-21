@@ -26,7 +26,7 @@ Socket::Socket(u_short p){
     struct sockaddr_in sockaddr;
     sockaddr.sin_family = AF_INET;
     sockaddr.sin_port = htons(port);
-    sockaddr.sin_addr.s_addr = inet_addr("0.0.0.0");
+    sockaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     int bindresult = bind(sock, (struct sockaddr*)&sockaddr, sizeof(struct sockaddr_in));
     if(bindresult != 0){
@@ -59,6 +59,7 @@ std::string Socket::Receive(){
     << "\tport: " << ntohs(clientAddr.sin_port) << "\n";
     
     char buffer[64 * 1024];
+    for(int i = 0; i < 64 * 1024; i++) buffer[i] = 0;
     recv(client, buffer, 64 * 1024, 0);
     
     std::string message(buffer);

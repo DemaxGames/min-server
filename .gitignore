@@ -43,4 +43,5 @@
 #vscode folder
 /.vscode
 
-
+#win cmd scripts
+lines_count.bat
